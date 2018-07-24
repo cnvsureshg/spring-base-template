@@ -1,0 +1,40 @@
+#logging creation
+logging:
+    file: /var/log/spring/Spring-dev.log
+    level:
+        com:
+            spring: TRACE
+        org:
+            hibernate: INFO
+            springframework:
+                web: TRACE
+                web.filter.CommonsRequestLoggingFilter: TRACE
+            apache:
+                http: INFO
+    pattern:
+        level: '[requestId:%X{requestId}] %5p'
+
+# Set server settings and enable required port
+server:
+    compression:
+        enabled: true
+        mime-types: application/json,application/xml,text/html,text/xml,text/plain,text/css,application/javascript
+        min-response-size: 1024
+    port: 8100
+
+# Data source details
+spring:
+    datasource:
+        driverClassName: com.mysql.jdbc.Driver
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        url: jdbc:mysql://localhost/spring?useSSL=false
+        username: root
+        password: iphone21
+        validationQuery: SELECT 1
+        testOnBorrow: true
+        initialSize: 2
+        minIdle: 2
+        maxActive: 5
+        maxIdle: 5
+    profiles:
+      active: dev
