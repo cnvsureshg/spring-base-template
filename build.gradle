@@ -39,6 +39,9 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-actuator:2.0.3.RELEASE')
     compile('org.springframework.boot:spring-boot-starter-web:1.5.6.RELEASE')
     compile("org.springframework.boot:spring-boot-configuration-processor")
+    //compile ('org.codehaus.groovy:groovy-all','org.springframework.boot:spring-boot-starter-web')
+    //compile("com.fasterxml.jackson.core:jackson-databind:2.6.4")
+
 }
 
 // Profile selection while build/bootRun eg: gradle build dev

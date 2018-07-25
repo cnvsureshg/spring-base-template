@@ -13,7 +13,7 @@ import java.util.Date;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)   // to enable this notation automatically add @EnableJpaAuditing in Application
 @JsonIgnoreProperties(
-        value = {"deletedAt"}
+        value = {"deletedAt","updatedAt", "createdAt"}
 //        allowGetters = true
 )
 @Data

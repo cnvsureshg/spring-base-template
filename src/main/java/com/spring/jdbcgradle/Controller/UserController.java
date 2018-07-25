@@ -2,6 +2,7 @@ package com.spring.jdbcgradle.Controller;
 
 import com.spring.jdbcgradle.Commons.ResponseModels;
 import com.spring.jdbcgradle.Commons.Roles;
+import com.spring.jdbcgradle.Entity.Model.UserModel;
 import com.spring.jdbcgradle.Entity.User;
 import com.spring.jdbcgradle.Repository.UserRepository;
 import lombok.Data;
@@ -43,15 +44,17 @@ public class UserController {
         return ResponseEntity.ok(successResponse);
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity store(@RequestBody User user) {
+    public ResponseEntity store(@RequestBody UserModel reqUser) {
         JSONObject successResponse = responseModels.responses("create", "success");
         JSONObject failureResponse = responseModels.responses("create", "failure");
 
-        if (userRepository.findByFirstname(user.getFirstname()).size() > 0) {
+        if (userRepository.findByFirstname(reqUser.getFirstname()).size() > 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(failureResponse);
         }
+        User user = new User();
+        user.setFirstname(reqUser.getFirstname());
         user.setRole(Roles.USER);
         userRepository.save(user);
         successResponse.put("content", user);
@@ -60,7 +63,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{user_id}")
     @ResponseBody
-    public ResponseEntity update(@PathVariable Integer user_id, @RequestBody User userRequest) {
+    public ResponseEntity update(@PathVariable Integer user_id, @RequestBody UserModel userRequest) {
         JSONObject successResponse = responseModels.responses("update", "success");
         JSONObject failureResponse = responseModels.responses("update", "failure");
 
