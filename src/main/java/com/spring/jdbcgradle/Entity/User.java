@@ -12,8 +12,6 @@ import org.json.simple.JSONObject;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
@@ -35,28 +33,27 @@ public class User extends AuditModel {
     @Column(length = 15, columnDefinition = "varchar(15) default 'USER'")
     private Roles role = Roles.USER;
 
-    @ManyToMany(targetEntity = Skill.class)
-    @JoinColumn(name = "skill_id", nullable = false)
-    @JoinTable(name = "user_skill",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "skill_id")})
+    @ManyToOne
+    @JoinTable(name = "users_skills", joinColumns = @JoinColumn(name = "user_fk"),
+            inverseJoinColumns = @JoinColumn(name = "skill_fk"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
-    private Set<Skill> skills = new HashSet<Skill>();
+//    @JsonSerialize(using = SkillSerializer.class)
+    private Skill skills;
 
     @Override
     public String toString() {
         String info = "";
         JSONObject jsonInfo = new JSONObject();
         jsonInfo.put("firstname", this.firstname);
-        JSONArray subArray = new JSONArray();
-        this.skills.forEach(skill -> {
-            JSONObject subJson = new JSONObject();
-            subJson.put("name", skill.getName());
-            subJson.put("id", skill.getId());
-            subArray.add(subJson);
-        });
-        jsonInfo.put("skills", subArray);
+//        JSONArray subArray = new JSONArray();
+//        this.skills.forEach(skill -> {
+//            JSONObject subJson = new JSONObject();
+//            subJson.put("name", skill.getName());
+//            subJson.put("id", skill.getId());
+//            subArray.add(subJson);
+//        });
+//        jsonInfo.put("skills", subArray);
         info = jsonInfo.toString();
         return info;
     }

@@ -3,7 +3,9 @@ package com.spring.jdbcgradle.Controller;
 import com.spring.jdbcgradle.Commons.ResponseModels;
 import com.spring.jdbcgradle.Commons.Roles;
 import com.spring.jdbcgradle.Entity.Model.UserModel;
+import com.spring.jdbcgradle.Entity.Skill;
 import com.spring.jdbcgradle.Entity.User;
+import com.spring.jdbcgradle.Repository.SkillRepository;
 import com.spring.jdbcgradle.Repository.UserRepository;
 import lombok.Data;
 import lombok.Getter;
@@ -13,7 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Optional;
+
+import java.util.*;
 
 @Getter
 @Data
@@ -23,6 +26,8 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private SkillRepository skillRepository;
 
     private ResponseModels responseModels = new ResponseModels();
 
@@ -56,6 +61,12 @@ public class UserController {
         User user = new User();
         user.setFirstname(reqUser.getFirstname());
         user.setRole(Roles.USER);
+//        Set<Skill> listSkill = new HashSet<Skill>();
+        Skill skill = new Skill();
+        skill.setName("Skill1");
+        skillRepository.save(skill);
+//        listSkill.add(skillRepository.findById(skill.getId()).get());
+        user.setSkills(skill);
         userRepository.save(user);
         successResponse.put("content", user);
         return ResponseEntity.ok(successResponse);
@@ -99,3 +110,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(failureResponse);
     }
 }
+
+
+
+//https://www.callicoder.com/hibernate-spring-boot-jpa-one-to-many-mapping-example/
+// Native Query
+// https://stackoverflow.com/questions/13012584/jpa-how-to-convert-a-native-query-result-set-to-pojo-class-collection/21487061

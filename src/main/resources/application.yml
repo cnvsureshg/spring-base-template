@@ -22,6 +22,8 @@ server:
         mime-types: application/json,application/xml,text/html,text/xml,text/plain,text/css,application/javascript
         min-response-size: 1024
     port: 8090
+    error:
+      include-stacktrace: always
 
 # Data source details
 spring:
@@ -41,8 +43,10 @@ spring:
         active: local
     jpa:
       hibernate:
-        ddl-auto: update  # it'll update the mysql schema every time when we generate the build no needs to be update manually
-
+        ddl-auto: update # it'll update the mysql schema every time when we generate the build no needs to be update manually
+    reactor:
+      stacktrace-mode:
+        enabled: false
 hibernate:
     batch:
         size: 20
